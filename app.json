@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "tron-mobile-wallet",
+    "description": "Mobile wallet for tron competition",
+    "slug": "tron-mobile-wallet",
+    "privacy": "unlisted",
+    "sdkVersion": "27.0.0",
+    "version": "1.0.0",
+    "icon": "./assets/images/icon.png",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "watch.tron.mobile",
+      "associatedDomains": [ "flottpay.com", "tronscan.org", "tron.watch" ]
+    },
+    "android": {
+      "package": "watch.tron.mobile"
+    },
+    "orientation": "portrait",
+    "scheme": "tron"
+  }
+}
