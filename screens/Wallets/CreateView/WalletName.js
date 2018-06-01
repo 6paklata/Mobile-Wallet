@@ -27,15 +27,8 @@ class WalletName extends React.Component {
     }
 
     advanceScreen() {
-        // TODO: whichever screen was used to get here, pass the param nextScreen so we can remove this statement
-        if (this.props.navigation.state.params.nextScreen) {
-            this.props.navigation.navigate(this.props.navigation.state.params.nextScreen, {
-                walletName: this.state.walletName
-            });
-            return;
-        }
-
-        this.props.navigation.navigate('WordListView', {
+        const nextScreen = this.props.navigation.state.params ? this.props.navigation.state.params.nextScreen : 'WordListView';
+        this.props.navigation.navigate(nextScreen, {
             walletName: this.state.walletName
         });        
     }    
@@ -89,7 +82,7 @@ class WalletName extends React.Component {
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingBottom: this.props.utils.footerHeight }}>                    
                     <KeyboardAvoidingView style={{ flex: 1, width: '80%', maxWidth: '100%', alignItems: 'center', justifyContent: 'center' }} behavior={ 'padding' }>
                         <View style={{ width: '100%' }}>
-                            <Text style={ styles.header }>Name your first wallet</Text>
+                            <Text style={ styles.header }>Name your wallet</Text>
                             <View style={ styles.content }>
                                 <Text style={ styles.contentText }>
                                     <Animated.Text style={{ color: colours.minText }}>Wallet names must have at least 3 characters</Animated.Text>
