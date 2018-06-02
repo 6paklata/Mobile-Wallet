@@ -157,7 +157,7 @@ class DetailedView extends React.Component {
 
             const result = await Utils.node.witnessVote(account, {
                 address: witness.address,
-                count: tronPower * 1000000
+                count: tronPower
             });
 
             if(!result || !result.result) {
@@ -186,7 +186,7 @@ class DetailedView extends React.Component {
 
         Alert.alert(
             'Vote Confirmation',
-            'Are you sure you want to vote for ' + witness.url + '?',
+            'Are you sure you want to vote for ' + witness.url + '? This will overwrite previous votes',
             [
                 { text: 'Cancel', onPress: () => {}, style: 'cancel' },
                 { text: 'Yes', onPress: () => onConfirmation() }

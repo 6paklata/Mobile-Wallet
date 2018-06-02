@@ -221,8 +221,6 @@ export const unfreeze = async ({ privateKey, publicKey }) => {
 }
 
 export const offlineSignature = async ({ privateKey, publicKey }, recentBlockBase64, contractType, args) => {
-    console.log(args, contractType);
-
     const contractName = `createUnsigned${contractType}Transaction`;
     const recentBlock = TronTools.blocks.blockFromBase64(recentBlockBase64);
 
@@ -255,6 +253,7 @@ export const send = async (account, { address, token, amount }) => {
     if(token == 'Tron')
         return sendTron(account, { address, amount });
 
+    const { privateKey, publicKey } = account;
     const lastBlock = await TronAPI.getLastBlock();
 
     const props = {

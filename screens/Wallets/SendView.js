@@ -150,8 +150,6 @@ class SendView extends React.Component {
                 amount
             });
 
-            console.log({ result });
-
             if(!result || !result.result) {
                 return Alert.alert(
                     'Transaction Failed',
