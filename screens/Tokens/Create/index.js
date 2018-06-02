@@ -76,8 +76,11 @@ class CreateView extends React.Component {
     }
 
     listEligibleAccounts() {
-        return Object.entries(this.props.wallets.accounts).filter(([ accountID, { balances } ]) => {
-            return balances.Tron >= 1024;  
+        const { tokenList: tokens } = this.props.tokens;
+        const owners = Object.values(tokens).map(({ address }) => address);
+
+        return Object.entries(this.props.wallets.accounts).filter(([ accountID, { balances, publicKey } ]) => {
+            return balances.Tron >= 1024 && !owners.includes(publicKey);  
         }).map(([ accountID, account ]) => account).sort((a, b) => {
             return b.balances.Tron - a.balances.Tron;  
         }).reduce((accounts, account) => {
@@ -354,7 +357,9 @@ class CreateView extends React.Component {
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingBottom: this.props.utils.footerHeight }}>
                 <Text style={{ width: '80%', maxWidth: '80%', flexWrap: 'wrap', color: '#ffffff', fontSize: 17, textAlign: 'center' }}>
-                    You do not have any eligible wallets to vote with. Eligible accounts must hold a minimum of 1024 Tron to issue a token
+                    You do not have any eligible wallets to vote with. 
+                    Eligible accounts must hold a minimum of 1024 Tron to issue a token,
+                    and can issue no more than one token
                 </Text>
             </View>
         )
@@ -442,5 +447,6 @@ const styles = StyleSheet.create({
 export default connect(state => ({
     app: state.app,
     utils: state.utils,
-    wallets: state.wallets
+    wallets: state.wallets,
+    tokens: state.tokens
 }))(CreateView);

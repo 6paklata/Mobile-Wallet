@@ -160,7 +160,8 @@ export const getTokens = async () => {
         begins: token.start_time,
         ends: token.end_time,
         description: token.description,
-        abbreviation: token.abbr ? token.abbr.toUpperCase() : false
+        abbreviation: token.abbr ? token.abbr.toUpperCase() : false,
+        address: token.owner_address
     })).reduce((tokens, token) => {
         return tokens[token.name] = token, tokens;
     }, {})
@@ -279,7 +280,7 @@ export const sendTron = async ({ publicKey, privateKey }, { address, amount }) =
 
 export const createToken = async ({ publicKey, privateKey }, token) => {
     token.sender = publicKey;
-    
+
     const lastBlock = await TronAPI.getLastBlock();
     const transaction = await TronTools.transactions.createUnsignedAssetIssueTransaction(token, lastBlock);
 
