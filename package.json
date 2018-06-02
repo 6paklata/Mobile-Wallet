@@ -56,7 +56,7 @@
     "stream-browserify": "^1.0.0",
     "string_decoder": "~0.10.25",
     "timers-browserify": "^1.0.1",
-    "tron-http-client": "https://github.com/TronWatch/tron-http-client",
+    "tron-http-client": "tronwatch/tron-http-client",
     "tron-http-tools": "tronwatch/tron-http-tools",
     "tronaccount": "^0.0.29",
     "tty-browserify": "0.0.0",

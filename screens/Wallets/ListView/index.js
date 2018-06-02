@@ -73,7 +73,7 @@ class ListView extends React.Component {
                                 name: 'account-balance-wallet'
                             },
                             title: 'New Wallet',
-                            onPress: () => { this.props.navigation.navigate('WalletNameView') },
+                            onPress: () => { this.props.navigation.navigate('WalletNameView', { nextScreen: 'WordListView' }) },
                         }, 
                         {
                             icon: {

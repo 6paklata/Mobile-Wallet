@@ -448,22 +448,6 @@
     Base64 "~0.2.0"
     inherits "~2.0.1"
 
-"@tronprotocol/wallet-api@0.0.35":
-  version "0.0.35"
-  resolved "https://registry.yarnpkg.com/@tronprotocol/wallet-api/-/wallet-api-0.0.35.tgz#6a2ec1fe6e480ad4d90bd90ed3a5c2261201ddd6"
-  dependencies:
-    axios "^0.18.0"
-    chai "^4.1.2"
-    crypto-js "^3.1.9-1"
-    elliptic "^6.4.0"
-    google-protobuf "^3.5.0"
-    grpc "^1.10.0"
-    grpc-caller "^0.4.0"
-    grpc-tools "^1.6.6"
-    js-sha3 "^0.7.0"
-    mocha "^5.1.0"
-    qs "^6.5.1"
-
 Base64@~0.2.0:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/Base64/-/Base64-0.2.1.tgz#ba3a4230708e186705065e66babdd4c35cf60028"
@@ -5217,7 +5201,7 @@ qs@^6.5.0, qs@~6.5.1:
   version "6.5.1"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.1.tgz#349cdf6eef89ec45c12d7d5eb3fc0c870343a6d8"
 
-qs@^6.5.1:
+qs@^6.5.1, qs@^6.5.2:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
 
@@ -6563,21 +6547,24 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
 
-"tron-http-client@https://github.com/TronWatch/tron-http-client":
-  version "1.0.3"
-  resolved "https://github.com/TronWatch/tron-http-client#b7d1f39c4aae14bb20ffbf4881256c0bb462703d"
+tron-http-client@tronwatch/tron-http-client:
+  version "1.0.20"
+  resolved "https://codeload.github.com/tronwatch/tron-http-client/tar.gz/f6b46fc1bf5b5b772d4f6a99a9f63096c69a2397"
   dependencies:
     axios "^0.18.0"
+    qs "^6.5.2"
     tron-http-tools tronwatch/tron-http-tools
 
 tron-http-tools@tronwatch/tron-http-tools:
-  version "1.0.15"
-  resolved "https://codeload.github.com/tronwatch/tron-http-tools/tar.gz/6ef117920fc3850f8b7e4a03c2420576a47ed3e9"
+  version "1.0.20"
+  resolved "https://codeload.github.com/tronwatch/tron-http-tools/tar.gz/390a1bf2c01d95bf84413728e7e4f01453702a7a"
   dependencies:
-    "@tronprotocol/wallet-api" "0.0.35"
     assert "^1.4.1"
     bip39 "2.3.0"
     btoa "^1.2.1"
+    elliptic "^6.4.0"
+    google-protobuf "^3.5.0"
+    js-sha3 "^0.7.0"
     sha256 "^0.2.0"
     text-encoding "^0.6.4"
 

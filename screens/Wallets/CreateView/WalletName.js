@@ -27,7 +27,7 @@ class WalletName extends React.Component {
     }
 
     advanceScreen() {
-        const nextScreen = this.props.navigation.state.params ? this.props.navigation.state.params.nextScreen : 'WordListView';
+        const nextScreen = this.props.navigation.state.params.nextScreen;
         this.props.navigation.navigate(nextScreen, {
             walletName: this.state.walletName
         });        
