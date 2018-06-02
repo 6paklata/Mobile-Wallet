@@ -245,7 +245,7 @@ class CreateView extends React.Component {
     }
 
     form() {
-        const exchangeValue = Math.floor(Math.max(1, this.state.inputs.exchangeToken / this.state.inputs.exchangeTRX) * 100) / 100;
+        const exchangeValue = Math.floor(Math.abs(this.state.inputs.exchangeToken / this.state.inputs.exchangeTRX) * 100) / 100;
 
         const getStyles = stateKey => {
             return [ 
