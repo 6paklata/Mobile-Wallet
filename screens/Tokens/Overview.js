@@ -19,15 +19,7 @@ class OverviewView extends React.Component {
     state = {
         filter: ''
     };
-
-    componentWillMount() {
-        //This causes remount after tokens are refreshed
-        //Since its in a WillMount, it will infinitely remount
-        //Made app unresponsive on token page, 
-        //~Tommy 
-        //Utils.reducers.refreshTokens();
-    }
-
+    
     display(token) {
         this.props.navigation.navigate('TokenView', { token });
     }
