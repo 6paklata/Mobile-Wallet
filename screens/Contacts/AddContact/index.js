@@ -50,7 +50,7 @@ class AddContact extends React.Component {
         if(!(/^([A-Za-z0-9]{1,32})$/.test(name)))
             errors.push('name');
 
-        if(address.length != 35)
+        if(!(/^([A-Za-z0-9]{34,36})$/.test(address)))
             errors.push('address');
 
         this.setState({ errors });
@@ -134,7 +134,7 @@ class AddContact extends React.Component {
 
                 <View style={ styles.inputContainer }>
                     <Text style={ getStyles('address') }>
-                        What is the address of this contact? Alphanumeric, 35 characters.
+                        What is the address of this contact? Alphanumeric, 36 characters.
                     </Text>
                     <Button input={ 'Contact Address' } stateKey={ 'address' } onInput={ this.onInput } />
                 </View>

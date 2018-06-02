@@ -251,6 +251,33 @@ class DetailedView extends React.Component {
         );
     }
 
+    deleteAccount() {
+        const processDelete = () => {
+            Utils.reducers.deleteAccount(this.state.walletID);
+            this.props.navigation.navigate('ListView');
+        }
+
+        const onConfirmation = () => {
+            Alert.alert(
+                'Are you sure?',
+                'We cannot undo this action if you have lost your wallet seed',
+                [
+                    { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+                    { text: 'Yes', onPress: () => { processDelete() } }
+                ]
+            );
+        }
+
+        Alert.alert(
+            'Delete Confirmation',
+            'Are you sure you want to delete ' + this.state.wallet.name + '?',
+            [
+                { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+                { text: 'Yes', onPress: () => { onConfirmation() } }
+            ]
+        );
+    }
+
     render() {
         const { wallet, walletID } = this.state;
 
@@ -311,6 +338,14 @@ class DetailedView extends React.Component {
                             },
                             title: 'Unfreeze',
                             onPress: () => { this.unfreeze() },
+                        },
+                        {
+                            icon: {
+                                type: MaterialCommunityIcons,
+                                name: 'delete'
+                            },
+                            title: 'Delete Wallet',
+                            onPress: () => { this.deleteAccount() }
                         }
                     ]}
                 />

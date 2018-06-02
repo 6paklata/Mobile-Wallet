@@ -1,6 +1,7 @@
 import { Constants } from 'expo';
 
 import CryptoJS from 'crypto-js';
+import _ from 'underscore';
 
 export const CHANGE_WALLET_MODE = 'APP_0';
 export const SET_GLOBAL_ERROR = 'APP_1';
@@ -97,11 +98,21 @@ export default (state = {
                 }
             }
         case DELETE_CONTACT:
-            delete state.secureStore.contacts[action.state.contactID];
-            return state;
+            return {
+                ...state,
+                secureStore: {
+                    ...state.secureStore,
+                    contacts: _.omit(state.secureStore.contacts, action.state.contactID)
+                }
+            }
         case DELETE_ACCOUNT:
-            delete state.secureStore.accounts[action.state.accountID];
-            return state;
+            return {
+                ...state,
+                secureStore: {
+                    ...state.secureStore,
+                    accounts: _.omit(state.secureStore.accounts, action.state.accountID)
+                }
+            }
         case CHANGE_LANGUAGE:
             return {
                 ...state,

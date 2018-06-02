@@ -76,10 +76,10 @@ class SendView extends React.Component {
             amount
         } = this.state.inputs;
 
-        if(address && !(/^([A-Za-z0-9]{35})$/.test(address)))
+        if(address && !(/^([A-Za-z0-9]{34,36})$/.test(address)))
             errors.push('address');
 
-        if(!address && !(/^([A-Za-z0-9]{35})$/.test(customAddress)))
+        if(!address && !(/^([A-Za-z0-9]{34,36})$/.test(customAddress)))
             errors.push('customAddress');
 
         if(token == 'Tron' && (!(amount > 0) || isNaN(amount)))
