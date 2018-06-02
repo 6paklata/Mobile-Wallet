@@ -1,142 +1,79 @@
 import React from 'react';
-import { StyleSheet, View, TouchableWithoutFeedback, Text, Picker } from 'react-native';
+
+import { StyleSheet, View } from 'react-native';
+import { Dropdown } from 'react-native-material-dropdown';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { Utils } from 'app/config';
-
-const { scale } = Utils;
-
-export default class Dropdown extends React.Component {
-
+export default class StyledDropdown extends React.Component {
     state = {
-        selectedValue: '',
+        options: [],
+        value: false
     }
 
-    constructor(props) {
-        super(props);
+    onChange(value) {
+        this.props.onChange(value);
     }
 
-    selectOption(selectedValue) {
-        this.setState({ selectedValue });
-        this.props.onSelectOption(selectedValue);
+    componentWillMount() {
+        this.setState({ 
+            options: this.props.options,
+            value: this.props.value
+        });
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.setState({ 
+            options: newProps.options,
+            value: newProps.value
+        });
     }
 
     render() {
         return (
-            <Picker
-                style={ styles.picker }
-                selectedValue={ this.state.selectedValue }
-                mode='dialog'
-                onValueChange={ (value) => this.selectOption(value) }>
-
-                {
-                    Object.entries(this.props.options).map(([ key, value ]) => (
-                        <Picker.Item key={ key } label={ value } value={ key } />
-                    ))
-                }
-            </Picker>
+            <View style={ styles.dropdownContainer }>
+                <Dropdown 
+                    value={ this.state.value }
+                    data={ this.state.options }
+                    onChangeText={ value => this.onChange(value) }
+                    containerStyle={ styles.dropdown }
+                    dropdownOffset={{ top: 15, left: 0 }}
+                    baseColor={ 'transparent' }
+                    textColor={ '#ffffff' }
+                    selectedItemColor={ '#000000' }
+                />
+                <View style={ styles.dropdownArrowContainer } pointerEvents={ 'none' }>
+                    <MaterialIcons 
+                        name={ 'arrow-drop-down' }
+                        style={ styles.dropdownArrow }
+                    />
+                </View>
+            </View>
         );
     }
-
-    // style(first, last) {
-    //     if (first) {
-    //         return {
-    //             borderTopLeftRadius: 5,
-    //             borderTopRightRadius: 5,
-    //             borderBottomLeftRadius: this.state.choosing ? 0 : 5,
-    //             borderBottomRightRadius: this.state.choosing ? 0 : 5,
-    //         };
-    //     }
-
-    //     if (last) {
-    //         return {
-    //             borderTopLeftRadius: 0,
-    //             borderTopRightRadius: 0,
-    //             borderBottomLeftRadius: 5,
-    //             borderBottomRightRadius: 5,
-    //         }
-    //     }
-
-    //     return {
-    //         borderRadius: 0,
-    //     };
-    // }
-
-    // toggle() {
-    //     this.setState({
-    //         choosing: !this.state.choosing,
-    //     });
-    // }
-
-    // choose(option) {
-    //     this.setState({
-    //         choosing: false,
-    //         selected: option,
-    //     });
-
-    //     if (this.props.onSelect)
-    //         this.props.onSelect(option);
-    // }
-
-    // optionsView() {
-    //     const options = this.props.options.map((option, index) => {
-    //         const last = index == this.props.options.length - 1;
-
-    //         return (
-    //             <TouchableWithoutFeedback key={ option } onPress={ () => this.choose(option) }>
-    //                 <View style={[ styles.dropdown, styles.dropdownOption, this.style(false, last) ]}>
-    //                     <Text style={{ color: 'white', fontSize: 16 }}>{ option }</Text>
-    //                 </View>
-    //             </TouchableWithoutFeedback>
-    //         );
-    //     });
-
-    //     return (
-    //         <View style={{ position: 'absolute', left: 0, right: 0, top: 51 }}>
-    //             { options }
-    //         </View>
-    //     );
-    // }
-
-    // render() {
-    //     return (
-    //         <View style={{ zIndex: 10 }}>
-    //             <TouchableWithoutFeedback onPress={ () => this.toggle() }>
-    //                 <View style={[ styles.dropdown, this.style(true, false) ]}>
-    //                     <Text style={{ color: 'white', fontSize: 16 }}>
-    //                         { this.state.selected || this.props.defaultValue }
-    //                     </Text>
-    //                     <MaterialIcons style={{ color: 'white', fontSize: scale(20) }} name="keyboard-arrow-down" />
-    //                 </View>
-    //             </TouchableWithoutFeedback>
-    //             { this.state.choosing && this.optionsView() }
-    //         </View>
-    //     );
-    // }
 }
 
 const styles = StyleSheet.create({
+    dropdownContainer: {
+        backgroundColor: 'rgba(255, 255, 255, 0.05)',
+        borderRadius: 5,
+        marginBottom: 0,
+        paddingLeft: 15,
+        paddingRight: 15
+    },
     dropdown: {
-        width: '100%',
-        padding: 15,
-        borderColor: '#2d343a',
-        borderWidth: 4,
-        borderRadius: 5,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        backgroundColor: 'transparent'
+    },
+    dropdownArrowContainer: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        paddingRight: 13,
         alignItems: 'center',
+        justifyContent: 'center',
     },
-    dropdownOption: {
-        backgroundColor: '#12181e',
-    },
-    pickerContainer: {
-        padding: 5,
-        borderColor: '#2d343a',
-        borderWidth: 4,
-        borderRadius: 5,
-    },
-    picker: {
-        color: 'white',
+    dropdownArrow: {
+        fontSize: 30,
+        color: '#ffffff'
     },
 });

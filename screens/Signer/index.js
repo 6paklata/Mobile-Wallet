@@ -1,168 +1,26 @@
 import React from 'react';
+import moment from 'moment';
+import DatePicker from 'react-native-datepicker'
 
 import { connect } from 'react-redux';
 import { Platform, Text, StyleSheet, View, TouchableWithoutFeedback, TouchableOpacity, TextInput, KeyboardAvoidingView, Picker, Clipboard } from 'react-native';
 import { LinearGradient, Linking, WebBrowser } from 'expo';
 
-import DatePicker from 'react-native-datepicker'
-
-import { Header, HeaderButton } from 'app/components/Header';
-
 import ScreenView from 'app/components/ScreenView';
 import LocalError from 'app/components/LocalError';
 import Dropdown from 'app/components/Dropdown';
+import StyledInput from 'app/components/StyledInput';
 
-import moment from 'moment';
-
-import Button from './Button';
-
+import { Header, HeaderButton } from 'app/components/Header';
 import { Utils } from 'app/config';
+
+import initialState from './initialState';
 
 const { scale } = Utils;
 
 class SignerView extends React.Component {
-    state = {
-        contractType: 'Transfer',
-        walletUUID: '',
-        types: {
-            Transfer: {
-                name: 'Send TRX',
-                inputs: {
-                    recipient: {
-                        text: 'Recipient',
-                        label: 'What is the recipient address?',
-                        type: 'default',
-                    },
-                    amount: {
-                        text: 'Amount',
-                        type: 'numeric',
-                        label: 'How much TRX do you want to send?',
-                    },
-                },
-            },
-            TransferAsset: {
-                name: 'Send Token',
-                inputs: {
-                    assetName: {
-                        text: 'Asset Name',
-                        label: 'Which token do you want to send?',
-                        type: 'dropdown',
-                        misc: {
-                            options: {
-                                tron: 'Tron',
-                                other: 'Other',
-                            },
-                        },
-                    },
-                    recipient: {
-                        text: 'Recipient',
-                        label: 'What is the recipient address?',
-                        type: 'default',
-                    },
-                    amount: {
-                        text: 'Amount',
-                        type: 'numeric',
-                        label: 'How much of the token do you want to send?',
-                    },
-                },
-            },
-            AssetIssue: {
-                name: 'Issue Asset',
-                inputs: {
-                    assetName: {
-                        text: 'Asset Name',
-                        label: 'What is the name of your token?',
-                        type: 'default',
-                    },
-                    assetAbbr: {
-                        text: 'Asset Abbreviation',
-                        label: 'What is the abbreviation of your token?',
-                        type: 'default',
-                    },
-                    totalSupply: {
-                        text: 'Total Supply',
-                        type: 'numeric',
-                        label: 'What is the total supply?'
-                    },
-                    exchangeRate: {
-                        label: 'What will be the exchange rate for your token?',
-                        type: 'exchange',
-                    },
-                    startTime: {
-                        type: 'date',
-                        label: 'What is the start date of the contract?'
-                    },
-                    endTime: {
-                        type: 'date',
-                        label: 'What is the end date of the contract?',
-                    },
-                    description: {
-                        text: 'Enter a description...',
-                        label: 'What is the description of your token?',
-                        type: 'default',
-                    },
-                    url: {
-                        text: 'Enter a url...',
-                        label: 'What should the URL for your contract be?',
-                        type: 'default',
-                    },
-                },
-            },
-            FreezeBalance: {
-                name: 'Freeze TRX',
-                inputs: {
-                    amount: {
-                        text: 'Amount',
-                        type: 'numeric',
-                        label: 'How much TRX would you like to freeze?'
-                    },
-                    duration: {
-                        text: 'Days to freeze for',
-                        type: 'numeric',
-                        label: 'How many days would you like to freeze it for?'
-                    },
-                },
-            },
-            UnfreezeBalance: {
-                name: 'Unfreeze TRX',
-                inputs: {},
-            },
-            ParticipateAssetIssue: {
-                name: 'Token Participation',
-                inputs: {
-                    assetName: {
-                        text: 'Asset Name',
-                        type: 'default',
-                        label: 'What is the name of the token?',
-                    },
-                    amount: {
-                        text: 'Amount',
-                        type: 'numeric',
-                        label: 'How much would you like to buy?',
-                    },
-                },
-            },
-            VoteWitness: {
-                name: 'Vote',
-                inputs: {
-                    address: {
-                        text: 'Address',
-                        type: 'default',
-                        label: 'What is the address of the vote?',
-                    },
-                    count: {
-                        text: 'Number of votes',
-                        type: 'numeric',
-                        label: 'How many votes would you like to cast?',
-                    },
-                },
-            },
-        },
-        inputs: {
-            
-        },
-        errors: [],
-        outputHex: '',
+    state = { 
+        ...initialState 
     };
 
     constructor(props) {
@@ -225,15 +83,18 @@ class SignerView extends React.Component {
     }
 
     getContractTypes() {
-        return Object.entries(this.state.types).reduce((types, [ contractType, { name } ]) => ({ ...types, [contractType]: name }), {});
+        return Object.entries(this.state.types).reduce((types, [ contractType, { name } ]) => {
+            return [ ...types, { label: name, value: contractType } ];
+        }, []);
     }
 
     getWalletOptions() {
-        return Object.entries(this.props.wallets.accounts).reduce((wallets, [ uuid, { name } ]) => ({ ...wallets, [uuid]: name }), {});
+        return Object.entries(this.props.wallets.accounts).reduce((wallets, [ uuid, { name } ]) => {
+            return [ ...wallets, { label: name, value: uuid } ]; 
+        }, []);
     }
 
     setDate(stateKey, date) {
-        console.log(`Set date: ${ stateKey }, ${ date }`);
         this.setState({
             inputs: {
                 ...this.state.inputs,
@@ -257,19 +118,18 @@ class SignerView extends React.Component {
                     <Text style={ styles.inputContainerLabel }>{ label }</Text>
                     
                     { (type == 'default' || type == 'numeric') &&
-                        <Button input={ text } stateKey={ key } type={ type } onInput={ this.onInput } />
+                        <StyledInput input={ text } stateKey={ key } type={ type } onInput={ this.onInput } />
                     }
 
                     { type == 'dropdown' &&
                         <View>
-                            <View style={ [ styles.pickerContainer, { marginBottom: 10 } ] }>
-                                <Dropdown
-                                    options={ misc.options }
-                                    onSelectOption={ (value) => this.onInput({ stateKey: key, value }) } />
-                            </View>
-
+                            <Dropdown
+                                options={ misc.options }
+                                value={ this.inputs[key] || false }
+                                onChange={ value => this.onInput({ stateKey: key, value }) } 
+                            />
                             { (this.state.inputs[key] && this.state.inputs[key] != 'tron') &&
-                                <Button input={ 'Token Name' } stateKey={ key } type={ type } onInput={ this.onInput } />
+                                <StyledInput input={ 'Token Name' } stateKey={ key } type={ type } onInput={ this.onInput } />
                             }
                         </View>
                     }
@@ -281,9 +141,9 @@ class SignerView extends React.Component {
                             </Text>
 
                             <View style={ styles.inputFlexContainer }>
-                                <Button input={ '1 TRX' } stateKey={ 'exchangeTRX' } flex onInput={ this.onInput } />
+                                <StyledInput input={ '1 TRX' } stateKey={ 'exchangeTRX' } flex onInput={ this.onInput } />
                                 <Text style={ styles.inputFlexSeparator }>to</Text>
-                                <Button input={ '10 Token' } stateKey={ 'exchangeToken' } flex onInput={ this.onInput } />
+                                <StyledInput input={ '10 Token' } stateKey={ 'exchangeToken' } flex onInput={ this.onInput } />
                             </View>
                         </View>
                     }
@@ -326,14 +186,9 @@ class SignerView extends React.Component {
 
     setContractType(contractType) {
         this.setState({
-            contractType,
-            inputs: {
-                recentBlockBase64: this.state.inputs.recentBlockBase64,
-            },
-            outputHex: '',
+            ...initialState,
+            contractType
         });
-
-        console.log(`Selected: ${ contractType }`);
     }
 
     getRecentBlockEncoding() {
@@ -351,29 +206,27 @@ class SignerView extends React.Component {
                 <Header title={ 'Signer' } />
                 <KeyboardAvoidingView style={ styles.container } behavior={ 'padding' }>
                     <ScreenView style={{ flex: 1 }}>
-                        <View style={{ flex: 1, padding: 16.5, paddingTop: 0, paddingBottom: 0 }}>
-                        
+                        <View style={{ flex: 1, padding: 16.5, paddingTop: 0, paddingBottom: 0 }}>                        
                             <View style={ styles.inputContainer }>
                                 <Text style={ styles.inputContainerLabel }>
                                     Which contract type are you looking for?
-                                </Text>
-                                
-                                <View style={ styles.pickerContainer }>
-                                    <Dropdown
-                                        options={ this.getContractTypes() }
-                                        onSelectOption={ (contractType) => this.setContractType(contractType) } />
-                                </View>
+                                </Text>                                
+                                <Dropdown
+                                    options={ this.getContractTypes() }
+                                    value={ this.state.contractType }
+                                    onChange={ contractType => this.setContractType(contractType) } 
+                                />
                             </View>
-
                             <View style={ styles.inputContainer }>
                                 <Text style={ styles.inputContainerLabel }>
                                     Which wallet will the transaction occur from?
-                                </Text>
-                                
+                                </Text>                                
                                 <View style={ styles.pickerContainer }>
                                     <Dropdown
                                         options={ this.getWalletOptions() }
-                                        onSelectOption={ (walletUUID) => this.setState({ walletUUID }) } />
+                                        value={ this.state.walletUUID }
+                                        onChange={ walletUUID => this.setState({ walletUUID }) } 
+                                    />
                                 </View>
                             </View>
 
@@ -387,7 +240,7 @@ class SignerView extends React.Component {
                                         </Text>
                                     </View>
                                 </TouchableWithoutFeedback>
-                                <Button input={ 'Recent Block' } stateKey={ 'recentBlockBase64' } onInput={ this.onInput } />
+                                <StyledInput input={ 'Recent Block' } stateKey={ 'recentBlockBase64' } onInput={ this.onInput } />
                             </View>
 
                             <TouchableOpacity onPress={ () => this.submit() }>
@@ -466,12 +319,6 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 18,
         textAlign: 'center'
-    },
-    pickerContainer: {
-        padding: 5,
-        borderColor: '#2d343a',
-        borderWidth: 4,
-        borderRadius: 5,
     },
     picker: {
         color: 'white',

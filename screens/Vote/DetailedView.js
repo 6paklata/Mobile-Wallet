@@ -4,7 +4,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, FlatList, A
 import { connect } from 'react-redux';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient, DangerZone } from 'expo';
-import { Dropdown } from 'react-native-material-dropdown';
 
 import { Utils } from 'app/config';
 import { Header, HeaderButton } from 'app/components/Header';
@@ -12,6 +11,7 @@ import { Header, HeaderButton } from 'app/components/Header';
 import ScreenView from 'app/components/ScreenView';
 import Fade from 'app/components/Fade';
 import Slider from 'app/components/Slider';
+import Dropdown from 'app/components/Dropdown';
 
 const { scale } = Utils;
 const { Lottie } = DangerZone;
@@ -200,8 +200,6 @@ class DetailedView extends React.Component {
             witness 
         } = this.state;
 
-        const account = this.props.wallets.accounts[this.state.selectedAccount];
-
         const options = Object.values(this.state.eligibleAccounts).map(account => ({
             value: account.accountID,
             label: account.name
@@ -215,20 +213,9 @@ class DetailedView extends React.Component {
                 <View style={ styles.dropdownContainer }>
                     <Dropdown 
                         value={ this.state.selectedAccount }
-                        data={ options }
-                        onChangeText={ value => this.onDropdownChange(value) }
-                        containerStyle={ styles.dropdown }
-                        dropdownOffset={{ top: 15, left: 0 }}
-                        baseColor={ 'transparent' }
-                        textColor={ '#ffffff' }
-                        selectedItemColor={ '#000000' }
-                    />
-                    <View style={ styles.dropdownArrowContainer } pointerEvents={ 'none' }>
-                        <MaterialIcons 
-                            name={ 'arrow-drop-down' }
-                            style={ styles.dropdownArrow }
-                        />
-                    </View>
+                        options={ options }
+                        onChange={ value => this.onDropdownChange(value) }
+                    />      
                 </View>
                 { this.sliderView() } 
                 <TouchableOpacity style={ styles.submitButton } onPress={ () => this.onPress() }>
@@ -272,11 +259,11 @@ class DetailedView extends React.Component {
                         </View>   
                     </ScreenView>
                 </Fade> }
-                { <Fade visible={ this.state.loading } style={[ styles.loading, { marginBottom: this.props.utils.footerHeight } ]}>
+                <Fade visible={ this.state.loading } style={[ styles.loading, { marginBottom: this.props.utils.footerHeight } ]}>
                     <Lottie ref={ animation => {
                         this.progressBar = animation;
                     }} source={ progressBar } />
-                </Fade> }
+                </Fade>
                 { !this.state.selectedAccount && this.errorView() }
             </View>
         );
@@ -285,27 +272,7 @@ class DetailedView extends React.Component {
 
 const styles = StyleSheet.create({
     dropdownContainer: {
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 5,
         marginBottom: 16.5,
-        paddingLeft: 15,
-        paddingRight: 15
-    },
-    dropdown: {
-        backgroundColor: 'transparent'
-    },
-    dropdownArrowContainer: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        bottom: 0,
-        paddingRight: 13,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    dropdownArrow: {
-        fontSize: 30,
-        color: '#ffffff'
     },
     slider: {
         backgroundColor: 'rgba(255, 255, 255, 0.1)',

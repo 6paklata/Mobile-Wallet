@@ -1,13 +1,14 @@
 import React from 'react';
+
 import { Image, Text, TextInput, StyleSheet, View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
-import ScreenView from 'app/components/ScreenView';
 import { Header, HeaderButton } from 'app/components/Header';
 import { addContact } from 'app/reducers/contacts';
 
-import Button from '../Button';
+import ScreenView from 'app/components/ScreenView';
+import StyledInput from 'app/components/StyledInput';
 
 import { Utils } from 'app/config';
 
@@ -129,14 +130,14 @@ class AddContact extends React.Component {
                     <Text style={ getStyles('name') }>
                         What would you like to name your contact? Alphanumeric, max 32 characters.
                     </Text>
-                    <Button input={ 'Contact Name' } stateKey={ 'name' } onInput={ this.onInput } />
+                    <StyledInput input={ 'Contact Name' } stateKey={ 'name' } onInput={ this.onInput } />
                 </View>
 
                 <View style={ styles.inputContainer }>
                     <Text style={ getStyles('address') }>
                         What is the address of this contact? Alphanumeric, 36 characters.
                     </Text>
-                    <Button input={ 'Contact Address' } stateKey={ 'address' } onInput={ this.onInput } />
+                    <StyledInput input={ 'Contact Address' } stateKey={ 'address' } onInput={ this.onInput } />
                 </View>
 
                 <View style={ styles.inputContainer }>

@@ -1,16 +1,17 @@
 import React from 'react';
+
 import { Image, Text, TextInput, StyleSheet, View, TouchableOpacity, TouchableWithoutFeedback, FlatList, ScrollView, Alert, Clipboard } from 'react-native';
 import { connect } from 'react-redux';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo';
 
-import ScreenView from 'app/components/ScreenView';
 import { Header, HeaderButton } from 'app/components/Header';
 import { addContact } from 'app/reducers/contacts';
 
-import { Utils } from 'app/config';
+import ScreenView from 'app/components/ScreenView';
+import StyledInput from 'app/components/StyledInput';
 
-import Button from '../Button';
+import { Utils } from 'app/config';
 
 class ViewContact extends React.Component {
 
@@ -130,7 +131,7 @@ class ViewContact extends React.Component {
                             <Text style={ getStyle() }>
                                 What is the address you would like to add to this contact? Alphanumeric, 35 characters.
                             </Text>
-                            <Button style={{ color: 'black', backgroundColor: 'rgba(0, 0, 0, 0.05)' }} input={ 'Contact Address' } stateKey={ 'address' } onInput={ this.onInput } />
+                            <StyledInput style={{ color: 'black', backgroundColor: 'rgba(0, 0, 0, 0.05)' }} input={ 'Contact Address' } stateKey={ 'address' } onInput={ this.onInput } />
 
                             <TouchableOpacity onPress={ () => this.saveAddress() }>
                                 <View style={ styles.button }>

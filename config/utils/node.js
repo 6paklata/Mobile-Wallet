@@ -204,7 +204,6 @@ export const freeze = async ({ privateKey, publicKey }, amount) => {
     }
 
     const transaction = await TronTools.transactions.createUnsignedFreezeBalanceTransaction(props, lastBlock);
-
     return await signAndBroadcast(transaction, privateKey);
 }
 
@@ -216,7 +215,6 @@ export const unfreeze = async ({ privateKey, publicKey }) => {
     }
 
     const transaction = await TronTools.transactions.createUnsignedUnfreezeBalanceTransaction(props, lastBlock);
-
     return await signAndBroadcast(transaction, privateKey);
 }
 
@@ -245,7 +243,6 @@ export const witnessVote = async ({ privateKey, publicKey }, ...votes) => {
     };
 
     const transaction = await TronTools.transactions.createUnsignedVoteWitnessTransaction(props, lastBlock);
-
     return await signAndBroadcast(transaction, privateKey);
 };
 
@@ -264,7 +261,6 @@ export const send = async (account, { address, token, amount }) => {
     };
 
     const transaction = await TronTools.transactions.createUnsignedTransferAssetTransaction(props, lastBlock);
-
     return await signAndBroadcast(transaction, privateKey);
 }
 
@@ -274,10 +270,18 @@ export const sendTron = async ({ publicKey, privateKey }, { address, amount }) =
     const props = {
         sender: publicKey,
         recipient: address,
-        amount: amount * 1000000
+        amount: amount * 1000000 // Amount is in SUN
     };
 
     const transaction = await TronTools.transactions.createUnsignedTransferTransaction(props, lastBlock);
+    return await signAndBroadcast(transaction, privateKey);
+}
+
+export const createToken = async ({ publicKey, privateKey }, token) => {
+    token.sender = publicKey;
+    
+    const lastBlock = await TronAPI.getLastBlock();
+    const transaction = await TronTools.transactions.createUnsignedAssetIssueTransaction(token, lastBlock);
 
     return await signAndBroadcast(transaction, privateKey);
 }

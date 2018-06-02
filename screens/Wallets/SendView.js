@@ -4,11 +4,11 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, 
 import { connect } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient, Linking, WebBrowser, DangerZone } from 'expo';
-import { Dropdown } from 'react-native-material-dropdown';
 
 import Fade from 'app/components/Fade';
 import ScreenView from 'app/components/ScreenView';
-import Input from './Input';
+import StyledInput from 'app/components/StyledInput';
+import Dropdown from 'app/components/Dropdown';
 
 import { Utils } from 'app/config';
 import { Header, HeaderButton } from 'app/components/Header';
@@ -221,13 +221,8 @@ class SendView extends React.Component {
                     <View style={ styles.dropdownContainer }>
                         <Dropdown 
                             value={ this.state.inputs.address }
-                            data={ addresses }
-                            onChangeText={ value => this.setState({ inputs: { ...this.state.inputs, address: value } }) }
-                            containerStyle={ styles.dropdown }
-                            dropdownOffset={{ top: 15, left: 0 }}
-                            baseColor={ 'transparent' }
-                            textColor={ '#ffffff' }
-                            selectedItemColor={ '#000000' }
+                            options={ addresses }
+                            onChange={ value => this.setState({ inputs: { ...this.state.inputs, address: value } }) }
                         />
                     </View>
                 </View>
@@ -236,7 +231,7 @@ class SendView extends React.Component {
                     <Text style={ getStyles('customAddress') }>
                         What is the address of the recipient?
                     </Text>
-                    <Input input={ 'Recipient Address' } stateKey={ 'customAddress' } onInput={ this.onInput } />
+                    <StyledInput input={ 'Recipient Address' } stateKey={ 'customAddress' } onInput={ this.onInput } />
                 </View> }
 
                 <View style={ styles.inputContainer }>
@@ -246,13 +241,8 @@ class SendView extends React.Component {
                     <View style={ styles.dropdownContainer }>
                         <Dropdown 
                             value={ this.state.inputs.token }
-                            data={ tokens }
-                            onChangeText={ value => this.setState({ inputs: { ...this.state.inputs, token: value } }) }
-                            containerStyle={ styles.dropdown }
-                            dropdownOffset={{ top: 15, left: 0 }}
-                            baseColor={ 'transparent' }
-                            textColor={ '#ffffff' }
-                            selectedItemColor={ '#000000' }
+                            options={ tokens }
+                            onChange={ value => this.setState({ inputs: { ...this.state.inputs, token: value } }) }
                         />
                     </View>
                 </View>
@@ -261,7 +251,7 @@ class SendView extends React.Component {
                     <Text style={ getStyles('amount') }>
                         How many tokens do you want to send?
                     </Text>
-                    <Input input={ 'Total Amount' } stateKey={ 'amount' } onInput={ this.onInput } />
+                    <StyledInput input={ 'Total Amount' } stateKey={ 'amount' } onInput={ this.onInput } />
                 </View>
 
                 <TouchableOpacity onPress={ () => this.submit() } disabled={ !!this.state.errors.length }>
@@ -347,30 +337,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 18,
         textAlign: 'center'
-    },
-    dropdownContainer: {
-        backgroundColor: 'rgba(255, 255, 255, 0.05)',
-        borderRadius: 5,
-        marginBottom: 0,
-        paddingLeft: 15,
-        paddingRight: 15
-    },
-    dropdown: {
-        backgroundColor: 'transparent'
-    },
-    dropdownArrowContainer: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        bottom: 0,
-        paddingRight: 13,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    dropdownArrow: {
-        fontSize: 30,
-        color: '#ffffff'
-    },
+    }
 });
 
 export default connect(state => ({ 
