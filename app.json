@@ -12,11 +12,21 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "watch.tron.mobile",
-      "associatedDomains": [ "flottpay.com", "tronscan.org", "tron.watch" ]
+      "bundleIdentifier": "watch.tron.mobile"
     },
     "android": {
-      "package": "watch.tron.mobile"
+      "package": "watch.tron.mobile",
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "com.android.launcher.permission.UPDATE_COUNT",
+        "com.android.launcher.permission.INSTALL_SHORTCUT",
+        "com.htc.launcher.permission.UPDATE_SHORTCUT",
+        "com.majeur.launcher.permission.UPDATE_BADGE",
+        "com.sec.android.provider.badge.permission.READ",
+        "com.sec.android.provider.badge.permission.WRITE",
+        "com.sonyericsson.home.permission.BROADCAST_BADGE"
+      ]
     },
     "orientation": "portrait",
     "scheme": "tron"
