@@ -172,7 +172,7 @@ class DetailedView extends React.Component {
             }
 
             await Utils.reducers.refreshAccount(account.accountID, true);
-            await Utils.reducers.refreshWitnesses();
+            await Utils.reducers.refreshWitnesses(true);
 
             return Alert.alert(
                 'Vote Success',

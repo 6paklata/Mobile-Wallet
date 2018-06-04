@@ -33,6 +33,7 @@ class DetailedView extends React.Component {
         super(props);
 
         this.filterTransactions = this.filterTransactions.bind(this);
+        Utils.reducers.refreshAccount(this.props.navigation.state.params.walletID);
     }
 
     componentWillMount() {

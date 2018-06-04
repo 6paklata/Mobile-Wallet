@@ -12,7 +12,8 @@ import { Utils } from 'app/config';
 import {
     createReduxBoundAddListener,
     createReactNavigationReduxMiddleware,
-    createNavigationReducer
+    createNavigationReducer,
+    initializeListeners
 } from 'react-navigation-redux-helpers';
 
 import { 
@@ -48,9 +49,13 @@ class App extends React.Component {
         super(props);
         Utils.navigator.setTopLevelNavigation(this.props.dispatch);
     }
-
+    
     componentWillMount() {
         this.loadAssets();   
+    }
+
+    componentDidMount() {
+        initializeListeners('root', this.props.nav);
     }
 
     render() {

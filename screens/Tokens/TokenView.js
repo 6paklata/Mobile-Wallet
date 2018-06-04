@@ -13,7 +13,7 @@ class TokenView extends React.Component {
         left: <HeaderButton icon='arrow-back' onPress={ () => this.navigateBack() } />,
         right: <HeaderButton icon='link' onPress={ () => this.openWebsite() } />
     }
-
+    
     componentWillMount() {
         this.setState({
             ...this.props.navigation.state.params.token
