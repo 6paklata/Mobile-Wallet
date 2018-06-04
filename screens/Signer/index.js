@@ -32,6 +32,14 @@ class SignerView extends React.Component {
     componentWillMount() {
         this.calculateErrors();
         
+        const contractType = this.props.navigation.state.params ? this.props.navigation.state.params.contract : false;
+
+        if(contractType) {
+            this.setState({
+                contractType
+            });
+        }
+
         this.setState({
             walletUUID: Object.keys(this.props.wallets.accounts)[0],
         });

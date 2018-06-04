@@ -44,6 +44,11 @@ class App extends React.Component {
         statusBarOffset: Utils.statusBarOffset
     };
 
+    constructor(props) {
+        super(props);
+        Utils.navigator.setTopLevelNavigation(this.props.dispatch);
+    }
+
     componentWillMount() {
         this.loadAssets();   
     }
