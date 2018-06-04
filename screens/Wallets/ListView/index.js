@@ -37,7 +37,7 @@ class ListView extends React.Component {
     }
 
     async walletPress(walletID) {
-        await Utils.reducers.refreshAccount(this.state.accountID, true);
+        await Utils.reducers.refreshAccount(walletID, true);
         this.props.navigation.navigate('DetailedView', { walletID });
         Utils.feedback();
     }
