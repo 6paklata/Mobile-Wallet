@@ -31,7 +31,7 @@ export const createAccount = ({ privateKey, publicKey, wordList }, walletName, b
         },
         votes: {},
         accountID: UUID(),
-        lastSync: -1,
+        lastSync: 0,
         blockchainName,
         privateKey,
         publicKey,
@@ -83,6 +83,14 @@ export const setTheme = (theme) => {
     store.dispatch(utils.setTheme(theme));
 }
 
+export const refreshAccounts = async (force = false) => {
+    const state = store.getState();
+
+    Object.keys(state.wallets.accounts).forEach(accountID => {
+        refreshAccount(accountID, force)
+    });
+}
+
 export const refreshAccount = async (accountID, force = false) => {
     const state = store.getState();
 
@@ -94,8 +102,14 @@ export const refreshAccount = async (accountID, force = false) => {
     const { 
         publicKey, 
         transactions,
-        balances
+        balances,
+        lastSync
     } = account;
+
+    if(!force && (Date.now() - lastSync) < 30000)
+        return false;
+
+    console.log(`Requested ${accountID}, force: ${force}, lastSync: ${Date.now() - lastSync}`);
 
     const lastTransaction = Math.max(...transactions.map(({ timestamp }) => timestamp), 0);
 
@@ -124,12 +138,12 @@ export const refreshWitnesses = async (force = false) => {
     if(state.app.walletMode == 'cold')
         return false;
 
+    if(!force && (Date.now() - state.witnesses.lastSync) < 30000)
+        return false;
+
     const witnessList = await Utils.node.getWitnesses();
-
-    Object.entries(witnessList).forEach(([ witnessID, witness ]) => {
-        store.dispatch(witnesses.saveWitness(witnessID, witness));
-    });
-
+    store.dispatch(witnesses.saveWitnesses(witnessList));
+    
     return false;
 }
 
@@ -139,11 +153,11 @@ export const refreshTokens = async (force = false) => {
     if(state.app.walletMode == 'cold')
         return false;
 
-    const tokenList = await Utils.node.getTokens();
+    if(!force && (Date.now() - state.witnesses.lastSync) < 30000)
+        return false;
 
-    Object.entries(tokenList).forEach(([ tokenName, token ]) => {
-        store.dispatch(tokens.saveToken(token));
-    });
+    const tokenList = await Utils.node.getTokens();
+    store.dispatch(tokens.saveTokens(tokenList));
 
     return false;
 }

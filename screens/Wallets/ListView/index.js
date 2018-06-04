@@ -22,11 +22,15 @@ class ListView extends React.Component {
         right: <HeaderButton icon='add' onPress={ () => this.toggleMenu() } />
     }
 
+    navigationSubscriber = false
+
     constructor(props) {
         super(props);
 
         this.toggleMenu = this.toggleMenu.bind(this);
         this.walletPress = this.walletPress.bind(this);
+
+        Utils.reducers.refreshAccounts();
     }
     
     toggleMenu() {
@@ -37,7 +41,6 @@ class ListView extends React.Component {
     }
 
     async walletPress(walletID) {
-        Utils.reducers.refreshAccount(walletID, true);
         this.props.navigation.navigate('DetailedView', { walletID });
         Utils.feedback();
     }

@@ -1,6 +1,6 @@
 export const SAVE_WITNESS = 'WITNESSES_0';
+export const SAVE_WITNESSES = 'WITNESSES_1';
 
-// get default state from local storage
 export default (state = {
     lastSync: 0,
     witnessList: {}
@@ -15,6 +15,12 @@ export default (state = {
                     [action.state.witnessID]: action.state.witness
                 }
             }
+        case SAVE_WITNESSES:
+            return {
+                ...state,
+                lastSync: Date.now(),
+                witnessList: action.state
+            }
         default:
             return state;
     }
@@ -27,5 +33,12 @@ export function saveWitness(witnessID, witness) {
             witnessID,
             witness
         }
+    }
+}
+
+export function saveWitnesses(witnesses) {
+    return {
+        type: SAVE_WITNESSES,
+        state: witnesses
     }
 }

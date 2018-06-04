@@ -14,6 +14,11 @@ import BasicView from './BasicView';
 import { Utils } from 'app/config';
 
 class ListView extends React.Component {
+    constructor(props) {
+        super(props);
+        Utils.reducers.refreshWitnesses();
+    }
+    
     onPress(witnessID) {
         this.props.navigation.navigate('DetailedView', { witnessID });
         Utils.feedback();

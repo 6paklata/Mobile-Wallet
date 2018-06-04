@@ -19,6 +19,11 @@ class OverviewView extends React.Component {
     state = {
         filter: ''
     };
+
+    constructor(props) {
+        super(props);
+        Utils.reducers.refreshTokens();
+    }
     
     display(token) {
         this.props.navigation.navigate('TokenView', { token });

@@ -12,7 +12,7 @@
     ],
     "splash": {
       "backgroundColor": "#292E37",
-      "image": "./assets/images/tronWatch-logo.png"
+      "image": "./assets/images/splashScreen.png"
     },
     "ios": {
       "supportsTablet": true,
