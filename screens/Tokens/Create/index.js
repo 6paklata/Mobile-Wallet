@@ -143,7 +143,7 @@ class CreateView extends React.Component {
             }
 
             await Utils.reducers.refreshAccount(accountID, true);
-            await Utils.reducers.refreshTokens();
+            await Utils.reducers.refreshTokens(true);
 
             return Alert.alert(
                 'Token Creation Success',
