@@ -36,7 +36,8 @@ class ListView extends React.Component {
         this.setState({ isMenuOpen: !this.state.isMenuOpen });
     }
 
-    walletPress(walletID) {
+    async walletPress(walletID) {
+        await Utils.reducers.refreshAccount(this.state.accountID, true);
         this.props.navigation.navigate('DetailedView', { walletID });
         Utils.feedback();
     }
