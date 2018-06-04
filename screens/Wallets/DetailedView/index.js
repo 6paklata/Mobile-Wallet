@@ -49,7 +49,25 @@ class DetailedView extends React.Component {
         });
     }
 
+    openSendView() {
+        if(this.props.app.walletMode == 'cold')
+            return Utils.navigator.navigate('Signer', { contract: 'Transfer' });
+
+        if(!total) {
+            return Alert.alert('No Tokens Available', 'You cannot send a transaction as you have no tokens available', [{ 
+                text: 'Dismiss',
+                onPress: () => {},
+                style: 'cancel'
+            }]);
+        }
+        
+        this.props.navigation.navigate('SendView', { accountID: this.state.walletID })
+    }
+
     openFreezeView() {
+        if(this.props.app.walletMode == 'cold')
+            return Utils.navigator.navigate('Signer', { contract: 'FreezeBalance' });
+
         if(!this.state.wallet.balances.Tron) {
             return Alert.alert('No Tron Available', 'You cannot freeze any Tron as you are not currently holding any', [{ 
                 text: 'Dismiss',
@@ -61,18 +79,50 @@ class DetailedView extends React.Component {
         this.props.navigation.navigate('FreezeView', { accountID: this.state.walletID })
     }    
 
-    openSendView() {
-        const total = Object.values(this.state.wallet.balances).reduce((total, amount) => total + Number(amount), 0);
+    async unfreeze() {
+        if(this.props.app.walletMode == 'cold')
+            return Utils.navigator.navigate('Signer', { contract: 'UnfreezeBalance' });
 
-        if(!total) {
-            return Alert.alert('No Tokens Available', 'You cannot send a transaction as you have no tokens available', [{ 
+        if(!this.state.wallet.balances.TronPower) {
+            return Alert.alert('No TronPower Available', 'You do not have any TronPower to unfreeze', [{ 
                 text: 'Dismiss',
                 onPress: () => {},
                 style: 'cancel'
             }]);
         }
-        
-        this.props.navigation.navigate('SendView', { accountID: this.state.walletID })
+
+        const onConfirmation = async () => {
+            const result = await Utils.node.unfreeze(this.state.wallet);
+
+            if(!result || !result.result) {
+                return Alert.alert(
+                    'Unfreeze Failed',
+                    'Sorry, we couldn\'t unfreeze your TronPower. Has it been 3 days?'
+                    [
+                        { text: 'Dismiss', onPress: () => {}, style: 'cancel' }
+                    ]
+                );
+            }
+
+            await Utils.reducers.refreshAccount(this.state.accountID, true);
+
+            return Alert.alert(
+                'Unfreeze Success',
+                'Your TronPower has been unfrozen',
+                [
+                    { text: 'Dismiss', onPress: () => {}, style: 'cancel' }
+                ]
+            );
+        }
+
+        Alert.alert(
+            'Unfreeze Confirmation',
+            'Are you sure you want to unfreeze ' + this.state.wallet.balances.TronPower + ' TronPower?',
+            [
+                { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+                { text: 'Yes', onPress: () => { onConfirmation() } }
+            ]
+        );
     }
 
     toggleMenu() {
@@ -209,49 +259,6 @@ class DetailedView extends React.Component {
         return transactions;
     }
 
-    async unfreeze() {
-        if(!this.state.wallet.balances.TronPower) {
-            return Alert.alert('No TronPower Available', 'You do not have any TronPower to unfreeze', [{ 
-                text: 'Dismiss',
-                onPress: () => {},
-                style: 'cancel'
-            }]);
-        }
-
-        const onConfirmation = async () => {
-            const result = await Utils.node.unfreeze(this.state.wallet);
-
-            if(!result || !result.result) {
-                return Alert.alert(
-                    'Unfreeze Failed',
-                    'Sorry, we couldn\'t unfreeze your TronPower. Has it been 3 days?'
-                    [
-                        { text: 'Dismiss', onPress: () => {}, style: 'cancel' }
-                    ]
-                );
-            }
-
-            await Utils.reducers.refreshAccount(this.state.accountID, true);
-
-            return Alert.alert(
-                'Unfreeze Success',
-                'Your TronPower has been unfrozen',
-                [
-                    { text: 'Dismiss', onPress: () => {}, style: 'cancel' }
-                ]
-            );
-        }
-
-        Alert.alert(
-            'Unfreeze Confirmation',
-            'Are you sure you want to unfreeze ' + this.state.wallet.balances.TronPower + ' TronPower?',
-            [
-                { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-                { text: 'Yes', onPress: () => { onConfirmation() } }
-            ]
-        );
-    }
-
     deleteAccount() {
         const processDelete = () => {
             Utils.reducers.deleteAccount(this.state.walletID);
@@ -294,7 +301,7 @@ class DetailedView extends React.Component {
                         backgroundColor: '#eeeeee' 
                     }}
                 >
-                    <Header title={ wallet.name } leftButton={ this.headerButtons.left } rightButton={ this.props.app.walletMode == 'hot' && this.headerButtons.right } />
+                    <Header title={ wallet.name } leftButton={ this.headerButtons.left } rightButton={ this.headerButtons.right } />
                     { this.balanceView() }
                 </LinearGradient>
                 <ScreenView style={{ flex: 1 }}>
