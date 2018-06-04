@@ -10,9 +10,14 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "splash": {
+      "backgroundColor": "#292E37",
+      "image": "./assets/images/tronWatch-logo.png"
+    },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "watch.tron.mobile"
+      "bundleIdentifier": "watch.tron.mobile",
+      "buildNumber": "1.0.1b1"
     },
     "android": {
       "package": "watch.tron.mobile",
