@@ -17,7 +17,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "watch.tron.mobile",
-      "buildNumber": "1.0.1b1"
+      "buildNumber": "1.0.1"
     },
     "android": {
       "package": "watch.tron.mobile",
