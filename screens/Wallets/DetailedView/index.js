@@ -52,7 +52,9 @@ class DetailedView extends React.Component {
     openSendView() {
         if(this.props.app.walletMode == 'cold')
             return Utils.navigator.navigate('Signer', { contract: 'Transfer' });
-
+        
+        const total = Object.values(this.state.wallet.balances).reduce((total, current) => total + Number(current), 0);
+        
         if(!total) {
             return Alert.alert('No Tokens Available', 'You cannot send a transaction as you have no tokens available', [{ 
                 text: 'Dismiss',
