@@ -7596,13 +7596,26 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
 
-tron-http-client@tronwatch/tron-http-client:
-  version "1.0.20"
-  resolved "https://codeload.github.com/tronwatch/tron-http-client/tar.gz/f6b46fc1bf5b5b772d4f6a99a9f63096c69a2397"
+"tron-http-client@https://github.com/TronWatch/tron-http-client":
+  version "1.0.27"
+  resolved "https://github.com/TronWatch/tron-http-client#8556c75c53414cf991fa2d957163b0219a193b69"
   dependencies:
     axios "^0.18.0"
     qs "^6.5.2"
     tron-http-tools tronwatch/tron-http-tools
+
+"tron-http-tools@https://github.com/TronWatch/tron-http-tools":
+  version "1.0.25"
+  resolved "https://github.com/TronWatch/tron-http-tools#9a340caba6ce2254ec2927dedd31d040f2121da6"
+  dependencies:
+    assert "^1.4.1"
+    bip39 "2.3.0"
+    btoa "^1.2.1"
+    elliptic "^6.4.0"
+    google-protobuf "^3.5.0"
+    js-sha3 "^0.7.0"
+    sha256 "^0.2.0"
+    text-encoding "^0.6.4"
 
 tron-http-tools@tronwatch/tron-http-tools:
   version "1.0.20"

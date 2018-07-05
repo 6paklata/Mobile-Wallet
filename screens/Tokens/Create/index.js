@@ -357,7 +357,7 @@ class CreateView extends React.Component {
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingBottom: this.props.utils.footerHeight }}>
                 <Text style={{ width: '80%', maxWidth: '80%', flexWrap: 'wrap', color: '#ffffff', fontSize: 17, textAlign: 'center' }}>
-                    You do not have any eligible wallets to vote with. 
+                    You do not have any eligible wallets to create a token with. 
                     Eligible accounts must hold a minimum of 1024 Tron to issue a token,
                     and can issue no more than one token
                 </Text>

@@ -204,6 +204,8 @@ export const freeze = async ({ privateKey, publicKey }, amount) => {
         amount: amount * 1000000 // Amount is in SUN
     }
 
+    console.log({ publicKey, privateKey, ...props });
+
     const transaction = await TronTools.transactions.createUnsignedFreezeBalanceTransaction(props, lastBlock);
     return await signAndBroadcast(transaction, privateKey);
 }
