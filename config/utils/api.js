@@ -80,6 +80,8 @@ export const broadcastTransaction = async transaction => {
     }).then(res => res.text()).then(res => {
         const decoded = TronTools.api.returnFromBase64(res).toObject();
 
+        console.log({ decoded });
+
         if(decoded && !decoded.result)
             decoded.message = Buffer.from(decoded.message, 'base64').toString();
 
