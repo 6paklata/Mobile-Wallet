@@ -65,3 +65,5 @@ typings/
 
 # Codealike
 codealike.json
+assets/images/logos/pik-binance.png
+*.png
