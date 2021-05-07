@@ -65,7 +65,7 @@
     "tron-http-tools": "https://github.com/TronWatch/tron-http-tools",
     "tronaccount": "^0.0.29",
     "tty-browserify": "0.0.0",
-    "underscore": "^1.9.0",
+    "underscore": "^1.12.1",
     "url": "~0.10.1",
     "util": "~0.10.3",
     "uuid": "^3.2.1",
